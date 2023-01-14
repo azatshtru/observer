@@ -1,25 +1,57 @@
 <script>
-    let noteIndex = 1;
-    let noteTitle = "The problems with analogies and the possible ways to fix them.";
-    let noteContent = "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim totam nisi, modi et aliquid error aut unde non quia, nostrum pariatur rerum voluptatum aperiam obcaecati. Accusantium odit ducimus placeat possimus!";
+    import { getArticleByIndex } from "./setup.js";
+
+    export let noteIndex = "1";
     let noteAuthor = "Adwait";
+
+    function changePage (pageNumber) {
+        noteIndex = pageNumber;
+    }
 
 </script>
 
+<div class="card">
 
 <div class="nav">
     <h2>Observing </h2> 
-    <input type="text" placeholder={noteIndex.toString()}>
+    <input type="text" placeholder={noteIndex.toString()} bind:value={noteIndex}>
 </div>
 <div class="page">
     <div class="header">
-        <h1>{noteTitle}</h1>
+        {#await getArticleByIndex(noteIndex)}
+        <h1>{"Waiting.."}</h1>
+        {:then article}
+        <h1>{@html article['title']}</h1>
+        {:catch error}
+        <h1>I am a title to something</h1>
+        {/await}
         <div class="fold"></div>
     </div>
+    {#await getArticleByIndex(noteIndex)}
+    <p>{"Waiting.."}</p>
+    {:then article}
+    <p>{@html article['body']}</p>
+    {:catch error}
+    <p>A document needs to be here.. and I need to be perservere.</p>
+    {/await}
+</div>
+
 </div>
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    .page p {
+        font-family: 'Montserrat';
+        font-size: 1.2rem;
+        font-weight: 400;
+        margin: 0%;
+        padding-left: 3em;
+        padding-right: 3em;
+        padding-top: 2em;
+        padding-bottom: 5em;
+        line-height: 2em;
+    }
 
     .nav {
         position: relative;
@@ -63,6 +95,8 @@
         font-weight: 800;
         font-size: 2.6rem;
         width: fit-content;
+
+        text-align: center;
     }
 
     @media only screen and (min-width: 925px){
@@ -74,13 +108,16 @@
             font-family: 'Montserrat';
             font-weight: 800;
             font-size: 3rem;
+
+            text-align: center;
         }
 
         .page {
             position: relative;
-            border: 1px solid whitesmoke;
+            border: 2px solid whitesmoke;
             width: 70vw;
-            height: 200vh;
+            height: fit-content;
+            min-height: 125vh;
         }
 
         .header {
