@@ -1,14 +1,21 @@
 <script>
     import { getArticleByIndex } from "./setup.js";
+    import { onMount } from 'svelte';
+    import { navigate } from "svelte-routing";
 
-    function getIndex(x){
-        let y = parseInt(x);
-        
-        return y.toString();
+    onMount(() => {
+        navigate('/');
+    });
+
+    function getIndex(){
+        let i = sessionStorage.getItem("noteIndex");
+        if(i === undefined || i == null || i == ""){return "1";}
+        return i;
     }
 
-    export let noteIndex = "1";
+    export let noteIndex = getIndex();
     $: filterNoteIndex = parseInt(noteIndex).toString();
+    $: sessionStorage.setItem("noteIndex", noteIndex);
     let noteAuthor = "Adwait";
 
 
