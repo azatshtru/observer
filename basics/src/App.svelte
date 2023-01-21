@@ -9,7 +9,6 @@
   <Route path=":index" let:params>
       <Page noteIndex={params.index}/>
   </Route>
-  
 </Router>
   
 </main>

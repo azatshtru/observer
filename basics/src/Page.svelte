@@ -1,12 +1,16 @@
 <script>
     import { getArticleByIndex } from "./setup.js";
 
+    function getIndex(x){
+        let y = parseInt(x);
+        
+        return y.toString();
+    }
+
     export let noteIndex = "1";
+    $: filterNoteIndex = parseInt(noteIndex).toString();
     let noteAuthor = "Adwait";
 
-    function changePage (pageNumber) {
-        noteIndex = pageNumber;
-    }
 
 </script>
 
@@ -16,9 +20,10 @@
     <h2>Observing </h2> 
     <input type="text" placeholder={noteIndex.toString()} bind:value={noteIndex}>
 </div>
+
 <div class="page">
     <div class="header">
-        {#await getArticleByIndex(noteIndex)}
+        {#await getArticleByIndex(filterNoteIndex)}
         <h1>{"Waiting.."}</h1>
         {:then article}
         <h1>{@html article['title']}</h1>
@@ -27,7 +32,7 @@
         {/await}
         <div class="fold"></div>
     </div>
-    {#await getArticleByIndex(noteIndex)}
+    {#await getArticleByIndex(filterNoteIndex)}
     <p>{"Waiting.."}</p>
     {:then article}
     <p>{@html article['body']}</p>
